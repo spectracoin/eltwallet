@@ -1,26 +1,48 @@
+// Copyright 2015-present 650 Industries. All rights reserved.
+
 #import "AppDelegate.h"
-#import <React/RCTBundleURLProvider.h>
-#import "RCCManager.h"
-#import <React/RCTRootView.h>
-#import <React/RNSentry.h>
+#import "ExpoKit.h"
+#import "EXViewController.h"
+
+@interface AppDelegate ()
+
+@property (nonatomic, strong) EXViewController *rootViewController;
+
+@end
 
 @implementation AppDelegate
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
-  NSURL *jsCodeLocation;
+    _window = [[UIWindow alloc] initWithFrame:[UIScreen mainScreen].bounds];
+    _window.backgroundColor = [UIColor whiteColor];
+    [[ExpoKit sharedInstance] application:application didFinishLaunchingWithOptions:launchOptions];
+    _rootViewController = [ExpoKit sharedInstance].rootViewController;
+    _window.rootViewController = _rootViewController;
 
-#ifdef DEBUG
-  jsCodeLocation = [[RCTBundleURLProvider sharedSettings] jsBundleURLForBundleRoot:@"index" fallbackResource:nil];
-#else
-  jsCodeLocation = [[NSBundle mainBundle] URLForResource:@"main" withExtension:@"jsbundle"];
-#endif
+    [_rootViewController loadReactApplication];
+    [_window makeKeyAndVisible];
 
-  self.window = [[UIWindow alloc] initWithFrame:[UIScreen mainScreen].bounds];
-  self.window.backgroundColor = [UIColor whiteColor];
-  [[RCCManager sharedInstance] initBridgeWithBundleURL:jsCodeLocation launchOptions:launchOptions];
+    return YES;
+}
 
-  return YES;
+#pragma mark - Handling URLs
+
+- (BOOL)application:(UIApplication *)application openURL:(NSURL *)url sourceApplication:(nullable NSString *)sourceApplication annotation:(id)annotation
+{
+    return [[ExpoKit sharedInstance] application:application openURL:url sourceApplication:sourceApplication annotation:annotation];
+}
+
+- (BOOL)application:(UIApplication *)application continueUserActivity:(nonnull NSUserActivity *)userActivity restorationHandler:(nonnull void (^)(NSArray * _Nullable))restorationHandler
+{
+    return [[ExpoKit sharedInstance] application:application continueUserActivity:userActivity restorationHandler:restorationHandler];
+}
+
+#pragma mark - Notifications
+
+- (void)application:(UIApplication *)application didReceiveLocalNotification:(nonnull UILocalNotification *)notification
+{
+    [[ExpoKit sharedInstance] application:application didReceiveLocalNotification:notification];
 }
 
 @end

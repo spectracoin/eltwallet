@@ -1,4 +1,52 @@
 {
-  "name": "eltwallet",
-  "displayName": "Eltwallet"
+  "expo": {
+    "name": "Eltwallet",
+    "description": "A fast, secure, and feature rich Ethereum Wallet.",
+    "slug": "eltwallet",
+    "privacy": "public",
+    "sdkVersion": "24.0.0",
+    "platforms": ["ios", "android"],
+    "version": "1.2.0",
+    "orientation": "portrait",
+    "icon": "./assets/icon.png",
+    "splash": {
+      "image": "./assets/splash.png",
+      "resizeMode": "cover",
+      "backgroundColor": "#09090A"
+    },
+    "androidStatusBar": {
+      "backgroundColor": "#09090A",
+      "barStyle": "light-content"
+    },
+    "android": {
+      "package": "tech.eltcoin.eltwallet"
+    },
+    "ios": {
+      "bundleIdentifier": "tech.eltcoin.etwalletapp",
+      "publishBundlePath": "ios/eltwallet/Supporting/shell-app.bundle",
+      "publishManifestPath": "ios/eltwallet/Supporting/shell-app-manifest.json"
+    },
+    "assetBundlePatterns": ["components/**/images/**", "screens/**/images/**"],
+    "isDetached": true,
+    "detach": {
+      "scheme": "exp76518188f5e94dd5bc16b0a837c4f211",
+      "iosExpoViewUrl":
+        "https://s3.amazonaws.com/exp-exponent-view-code/ios-v2.2.1-sdk24.0.0-36ff2264-629d-44df-a819-8c982454e5e8.tar.gz",
+      "androidExpoViewUrl":
+        "https://s3.amazonaws.com/exp-exponent-view-code/android-v2.2.0-sdk24.0.0-16620828-4df4-4e2d-b0af-5dc1352b82cb.tar.gz"
+    },
+    "hooks": {
+      "postPublish": [
+        {
+          "file": "sentry-expo/upload-sourcemaps",
+          "config": {
+            "organization": "hodlvc",
+            "project": "eltwallet",
+            "authToken":
+              "9be646f4614646b280d1f07c82b57ae932f8eb6c08cf4c79ad0cf8d0b8c535e0"
+          }
+        }
+      ]
+    }
+  }
 }

@@ -38,11 +38,11 @@ $ npm install
 # Hack for NodeJS dependencies
 $ ./node_modules/.bin/rn-nodeify --hack --install "assert, crypto, stream, events, vm"
 
-# Run project on connected iPhone or iOS simulator
-$ react-native run-ios
+# Install dependencies for iOS
+$ cd ios
+$ pod install
 
-# Run project on connected Android device or running Android simulator
-$ react-native run-android
+# Run the project in XCode or Android Studio
 ```
 
 Have fun!
