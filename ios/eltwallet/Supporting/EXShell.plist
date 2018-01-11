@@ -8,5 +8,7 @@
 	<string>exp://exp.host/@vfaramond/eltwallet</string>
 	<key>releaseChannel</key>
 	<string>default</string>
+	<key>isManifestVerificationBypassed</key>
+	<string>YES</string>
 </dict>
 </plist>
