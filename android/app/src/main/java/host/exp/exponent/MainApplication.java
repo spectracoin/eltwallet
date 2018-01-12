@@ -10,7 +10,6 @@ import java.util.List;
 // import com.facebook.react.ReactApplication;
 import br.com.classapp.RNSensitiveInfo.RNSensitiveInfoPackage;
 import com.bitgo.randombytes.RandomBytesPackage;
-import com.aakashns.reactnativedialogs.ReactNativeDialogsPackage;
 
 public class MainApplication extends ExpoApplication {
 
@@ -28,8 +27,7 @@ public class MainApplication extends ExpoApplication {
         // Needed for `react-native link`
         // new MainReactPackage(),
             new RNSensitiveInfoPackage(),
-            new RandomBytesPackage(),
-            new ReactNativeDialogsPackage()
+            new RandomBytesPackage()
     );
   }
 

@@ -1,14 +1,7 @@
 import React, { Component } from 'react';
-import {
-  Image,
-  Platform,
-  StyleSheet,
-  TouchableOpacity,
-  View,
-  ActionSheetIOS,
-} from 'react-native';
+import { Image, StyleSheet, TouchableOpacity, View } from 'react-native';
 import { connect } from 'react-redux';
-import DialogAndroid from 'react-native-dialogs';
+import { connectActionSheet } from '@expo/react-native-action-sheet';
 import PropTypes from 'prop-types';
 import { Text } from '../../../../components';
 import { SELECT_TOKEN } from '../../../../config/actionTypes';
@@ -70,13 +63,14 @@ class BalanceRow extends Component {
       }),
     ).isRequired,
     currentBalance: PropTypes.number.isRequired,
+    onAddNewToken: PropTypes.func.isRequired,
+    onTokenChange: PropTypes.func.isRequired,
+    onSettingsIconPress: PropTypes.func.isRequired,
     selectedToken: PropTypes.shape({
       name: PropTypes.string.isRequired,
       symbol: PropTypes.string.isRequired,
     }).isRequired,
-    onAddNewToken: PropTypes.func.isRequired,
-    onTokenChange: PropTypes.func.isRequired,
-    onSettingsIconPress: PropTypes.func.isRequired,
+    showActionSheetWithOptions: PropTypes.func.isRequired,
   };
 
   onTokenChange = index => {
@@ -91,7 +85,7 @@ class BalanceRow extends Component {
   };
 
   showActionSheet = () => {
-    ActionSheetIOS.showActionSheetWithOptions(
+    this.props.showActionSheetWithOptions(
       {
         options: this.props.availableTokens
           .map(token => token.name)
@@ -99,19 +93,6 @@ class BalanceRow extends Component {
       },
       this.onTokenChange,
     );
-  };
-
-  showDialog = () => {
-    const dialog = new DialogAndroid();
-
-    dialog.set({
-      items: this.props.availableTokens
-        .map(token => token.name)
-        .concat(['Add new token']),
-      itemsCallback: this.onTokenChange,
-    });
-
-    dialog.show();
   };
 
   render() {
@@ -129,9 +110,7 @@ class BalanceRow extends Component {
         </View>
         <View style={styles.iconsContainer}>
           <TouchableOpacity
-            onPress={
-              Platform.OS === 'ios' ? this.showActionSheet : this.showDialog
-            }
+            onPress={this.showActionSheet}
             style={{ borderWidth: 0 }}
           >
             <Image source={switchIcon} style={styles.switchIcon} />
@@ -154,4 +133,6 @@ const mapDispatchToProps = dispatch => ({
   onTokenChange: token => dispatch({ type: SELECT_TOKEN, token }),
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(BalanceRow);
+export default connect(mapStateToProps, mapDispatchToProps)(
+  connectActionSheet(BalanceRow),
+);

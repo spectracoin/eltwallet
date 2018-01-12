@@ -7,6 +7,7 @@ import { withMappedNavigationProps } from 'react-navigation-props-mapper';
 import { Provider } from 'react-redux';
 import { PersistGate } from 'redux-persist/es/integration/react';
 import getSlideFromRightTransition from 'react-navigation-slide-from-right-transition';
+import { ActionSheetProvider } from '@expo/react-native-action-sheet';
 import './shim';
 import { persistor, store } from './config/store';
 import AnalyticsUtils from './utils/analytics';
@@ -135,19 +136,24 @@ export default class App extends React.Component {
     return (
       <Provider store={store}>
         <PersistGate persistor={persistor}>
-          <View style={styles.container}>
-            <StatusBar backgroundColor="transparent" barStyle="light-content" />
-            <Navigator
-              onNavigationStateChange={(prevState, currentState) => {
-                const currentScreen = getCurrentRouteName(currentState);
-                const prevScreen = getCurrentRouteName(prevState);
+          <ActionSheetProvider>
+            <View style={styles.container}>
+              <StatusBar
+                backgroundColor="transparent"
+                barStyle="light-content"
+              />
+              <Navigator
+                onNavigationStateChange={(prevState, currentState) => {
+                  const currentScreen = getCurrentRouteName(currentState);
+                  const prevScreen = getCurrentRouteName(prevState);
 
-                if (prevScreen !== currentScreen) {
-                  AnalyticsUtils.trackScreen(currentScreen);
-                }
-              }}
-            />
-          </View>
+                  if (prevScreen !== currentScreen) {
+                    AnalyticsUtils.trackScreen(currentScreen);
+                  }
+                }}
+              />
+            </View>
+          </ActionSheetProvider>
         </PersistGate>
       </Provider>
     );

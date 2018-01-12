@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import {
-  ActionSheetIOS,
   Image,
   Platform,
   ScrollView,
@@ -10,7 +9,7 @@ import {
   TouchableOpacity,
 } from 'react-native';
 import { connect } from 'react-redux';
-import DialogAndroid from 'react-native-dialogs';
+import { connectActionSheet } from '@expo/react-native-action-sheet';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scrollview';
 import PropTypes from 'prop-types';
 import { Text } from '../../../../components';
@@ -79,6 +78,7 @@ class Form extends Component {
       name: PropTypes.string.isRequired,
       symbol: PropTypes.string.isRequired,
     }).isRequired,
+    showActionSheetWithOptions: PropTypes.func.isRequired,
   };
 
   onTokenChange = index => {
@@ -93,7 +93,7 @@ class Form extends Component {
   };
 
   showActionSheet = () => {
-    ActionSheetIOS.showActionSheetWithOptions(
+    this.props.showActionSheetWithOptions(
       {
         options: this.props.availableTokens
           .map(token => token.name)
@@ -101,19 +101,6 @@ class Form extends Component {
       },
       this.onTokenChange,
     );
-  };
-
-  showDialog = () => {
-    const dialog = new DialogAndroid();
-
-    dialog.set({
-      items: this.props.availableTokens
-        .map(token => token.name)
-        .concat(['Add new token']),
-      itemsCallback: this.onTokenChange,
-    });
-
-    dialog.show();
   };
 
   render() {
@@ -180,9 +167,7 @@ class Form extends Component {
               value={amount}
             />
             <TouchableOpacity
-              onPress={
-                Platform.OS === 'ios' ? this.showActionSheet : this.showDialog
-              }
+              onPress={this.showActionSheet}
               style={styles.tokenPicker}
             >
               <Text style={styles.tokenSymbol}>{selectedToken.symbol}</Text>
@@ -204,4 +189,6 @@ const mapDispatchToProps = dispatch => ({
   onTokenChange: token => dispatch({ type: SELECT_TOKEN, token }),
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(Form);
+export default connect(mapStateToProps, mapDispatchToProps)(
+  connectActionSheet(Form),
+);

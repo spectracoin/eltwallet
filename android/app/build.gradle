@@ -9,7 +9,6 @@ buildscript {
 }
 apply plugin: 'com.android.application'
 apply plugin: 'io.fabric'
-apply plugin: 'com.neenbedankt.android-apt'
 
 repositories {
   maven { url 'https://maven.fabric.io/public' }
@@ -17,7 +16,7 @@ repositories {
 
 android {
   compileSdkVersion 26
-  buildToolsVersion '26.0.1'
+  buildToolsVersion '26.0.2'
 
   defaultConfig {
     applicationId 'tech.eltcoin.eltwallet'
@@ -37,24 +36,29 @@ android {
   dexOptions {
     javaMaxHeapSize System.getenv("DISABLE_DEX_MAX_HEAP") ? null : "8g"
   }
+  flavorDimensions 'dev', 'prod'
   productFlavors {
     // Define separate dev and prod product flavors.
     dev {
       // dev utilizes minSDKVersion = 21 to allow the Android gradle plugin
       // to pre-dex each module and produce an APK that can be tested on
       // Android Lollipop without time consuming dex merging processes.
+      dimension 'dev'
       minSdkVersion 21
     }
     devRemoteKernel {
+      dimension 'dev'
       minSdkVersion 21
     }
     dev19 {
       // For debugging / development on older SDK versions. Increases build
       // time so use 'dev' if not running on older SDKs.
+      dimension 'dev'
       minSdkVersion 19
     }
     prod {
       // The actual minSdkVersion for the application.
+      dimension 'prod'
       minSdkVersion 19
     }
   }
@@ -100,9 +104,8 @@ preBuild.dependsOn exponentPrebuildStep
 
 
 dependencies {
-    compile project(':react-native-sensitive-info')
-    compile project(':react-native-randombytes')
-    compile project(':react-native-dialogs')
+  compile project(':react-native-sensitive-info')
+  compile project(':react-native-randombytes')
   compile fileTree(dir: 'libs', include: ['*.jar'])
 
   compile 'com.android.support:multidex:1.0.1'
@@ -128,7 +131,7 @@ dependencies {
   compile 'com.google.android.gms:play-services-auth:9.8.0'
   compile 'com.google.android.gms:play-services-location:9.8.0'
   compile 'com.google.android.gms:play-services-ads:9.8.0'
-  apt 'com.raizlabs.android:DBFlow-Compiler:2.2.1'
+  annotationProcessor 'com.raizlabs.android:DBFlow-Compiler:2.2.1'
   compile "com.raizlabs.android:DBFlow-Core:2.2.1"
   compile "com.raizlabs.android:DBFlow:2.2.1"
   compile "com.madgag.spongycastle:core:1.53.0.0"
