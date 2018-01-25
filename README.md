@@ -1,16 +1,4 @@
-<div align="center">
-  <p>
-    <img src="assets/logo.png" width="250" />
-  </p>
-  <p>
-    ✨ Ethereum and ERC20 tokens wallet built by ELTCOIN ✨
-  </p>
-  <p>
-  <a href="https://play.google.com/store/apps/details?id=tech.eltcoin.eltwallet">
-    <img src="assets/google-play.png" width="110"/>
-  </a>
-  </p>
-</div>
+
 
 ## Features
 
